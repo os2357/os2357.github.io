@@ -21,7 +21,7 @@
 <h1>Running a Near Shardnet Validator</h1>
 <h3>Covering Stakewars-III Challenges 001-004</h3>
 <div id="intro">
-<p>Follow along to learn how to deploy a Near shardnet validator using a cloud hosting provider of preference.
+<p>Follow along to learn how to deploy a Near shardnet validator in the cloud.</p>
 <small>
 <ul>
 	<li><a href="#">Intro</a></li>
@@ -77,6 +77,108 @@ source $HOME/.bash_profile
 </div>
 <div id="c2">
 <h2>Challenge 002</h2>
+<p>Challenge 2 is all about getting your validator node running. May the real fun part begin! <br />
+Firstly, let's confirm that your machine's CPU supports AVX instructions which are required.</p>
+<pre>
+lscpu | grep -P '(?=.*avx )(?=.*sse4.2 )(?=.*cx16 )(?=.*popcnt )' > /dev/null \
+&& echo "Supported" \
+|| echo "Not supported"
+</pre>
+
+<p>If that went well, install dependencies</p>
+<pre>
+sudo apt install -y clang build-essential make git binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake gcc g++ python docker.io protobuf-compiler libssl-dev pkg-config clang llvm cargo python3-pip
+</pre>
+
+<p>Set configuration</p>
+<pre>
+USER_BASE_BIN=$(python3 -m site --user-base)/bin
+export PATH="$USER_BASE_BIN:$PATH"
+</pre>
+
+<p>Install Rust and cargo</p>
+<pre>
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source $HOME/.cargo/env
+</pre>
+
+<h3>Clone nearcore</h3>
+<pre>
+git clone https://github.com/near/nearcore
+cd nearcore
+git fetch
+</pre>
+
+<p>Check out to the required commit <a href="https://github.com/near/stakewars-iii/blob/main/commit.md"><strong>found here</strong></a> (e.g. 68bfa84ed1455f891032434d37ccad696e91e4f5), then</p>
+<pre>
+git checkout <commit>
+</pre>
+
+<p>You can now build nearcore via cargo build with the following flags</p>
+
+<pre>
+cargo build -p neard --release --features shardnet
+</pre>
+
+<p>This takes a little while, go get some coffee or tea. The binary path is target/release/neard. <br/>
+NEAR node requires a working directory and configuration files. Generate the initial required working directory by running</p>
+<pre>
+./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
+</pre>
+
+<p>Replace the config file</p>
+<pre>
+rm ~/.near/config.json
+wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/config.json
+</pre>
+
+<h3>Run the Node!</h3>
+<pre>
+cd ~/nearcore
+./target/release/neard --home ~/.near run
+</pre>
+
+Finally, activate your node as a validator by authorizing your wallet. This is because a full access key needs to be installed locally to be able to sign transactions via NEAR-CLI.
+
+<pre>
+near login
+</pre>
+
+<p>Follow the instructions and copy the generated link into your browser, which will allow you to grant access to Near CLI. Enter your account name and press enter.</p>
+
+<h3>Create your Pool</h3>
+
+<p>Let's get going by generating a new key for your pool.</p>
+<pre>
+near generate-key <pool_id>
+</pre>
+
+<p>Note: <pool_id> ---> xx.factory.shardnet.near WHERE xx is you pool name. <br />
+Copy the file generated to shardnet folder: Make sure to replace <pool_id> by your accountId.</p>
+
+<pre>
+cp ~/.near-credentials/shardnet/YOUR_WALLET.json ~/.near/validator_key.json
+</pre>
+
+<p>Make the following changes: <br />
+1. Edit "account_id" to xx.factory.shardnet.near, where xx is your PoolName <br />
+2. Change "private_key" to "secret_key" <br />
+Note: The account_id must match the staking pool contract name or you will not be able to sign blocks.</p>
+
+<p>The file's content should look similar to the following</p>
+<pre>
+{
+  "account_id": "xx.factory.shardnet.near",
+  "public_key": "ed25519:HeaBJ3xLgvZacQWmEctTeUqyfSU4SDEnEwckWxd92W2G",
+  "secret_key": "ed25519:****"
+}
+</pre>
+
+<p>Awesome. You can now start your Near shardnet validator node</p>
+<pre>
+target/release/neard run
+</pre>
+
 </div>
 <div id="c3">
 <h2>Challenge 003</h2>
