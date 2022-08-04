@@ -19,7 +19,7 @@
 </head>
 <body>
 <h1>🪄 Running a Near Shardnet Validator</h1>
-<h3>Covering Stakewars-III Challenges 001-004</h3>
+<h3>Covering Stakewars-III Challenges 001--004</h3>
 <div id="intro">
 <p>Follow along to learn how to deploy a Near shardnet validator in the cloud.</p>
 <small>
@@ -89,7 +89,7 @@ lscpu | grep -P '(?=.*avx )(?=.*sse4.2 )(?=.*cx16 )(?=.*popcnt )' > /dev/null \
 
 <p>If that went well, install dependencies</p>
 <pre>
-sudo apt install -y clang build-essential make git binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake gcc g++ python docker.io protobuf-compiler libssl-dev pkg-config clang llvm cargo python3-pip
+sudo apt install -y clang make git binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake gcc g++ python docker.io protobuf-compiler libssl-dev pkg-config clang llvm cargo python3-pip jq
 </pre>
 
 <p>Set configuration</p>
@@ -262,9 +262,6 @@ journalctl -n 100 -f -u neard | ccze -A
 <img src="images/near/near-shardnet.png" width="100%"> <br />
 
 <h3>RPC</h3>
-<pre>
-sudo apt install curl jq
-</pre>
 
 <p>Find below a list of common commands:</p>
 <pre>
