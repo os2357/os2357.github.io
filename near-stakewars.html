@@ -249,6 +249,33 @@ near call [pool_id] resume_staking '{}' --accountId [account_id]
 </div>
 <div id="c4">
 <h2>Challenge 004</h2>
+<p>Set up tools for monitoring your Near validator node's status.</p>
+
+<h3>Log Files</h3>
+<p>Depending on your setup, Near log files are stored either in <strong>~/.nearup/logs</strong> or in systemd.</p>
+<pre>
+journalctl -n 100 -f -u neard | ccze -A
+</pre>
+
+<h3>RPC</h3>
+<pre>
+sudo apt install curl jq
+</pre>
+
+<p>Find below a list of common commands:</p>
+<pre>
+# Check node version
+curl -s http://127.0.0.1:3030/status | jq .version
+
+# Check delegators and stake
+near view <your pool>.factory.shardnet.near get_accounts '{"from_index": 0, "limit": 10}' --accountId [accountId].shardnet.near
+
+# Check reason for why validator was kicked
+curl -s -d '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params": [null]}' -H 'Content-Type: application/json' 127.0.0.1:3030 | jq -c '.result.prev_epoch_kickout[] | select(.account_id | contains ("[POOL_ID]"))' | jq .reason
+
+# Check blocks produced / expected
+curl -r -s -d '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params": [null]}' -H 'Content-Type: application/json' 127.0.0.1:3030 | jq -c '.result.current_validators[] | select(.account_id | contains ("POOL_ID"))'
+</pre>
 </div>
 </body>
 </html>
