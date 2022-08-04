@@ -7,13 +7,17 @@
 <style type="text/css">
 	body {
 		font-family: 'Manrope', sans-serif;
-		margin: 20px;
 	}
 	img {
 		padding: 5px;
 	}
 	pre {
-  		font-family: "Courier New", monospace;
+  	font-family: "Courier New", monospace;
+  	white-space: pre-wrap;
+ 		white-space: -moz-pre-wrap;
+ 		white-space: -pre-wrap;
+ 		white-space: -o-pre-wrap;
+ 		word-wrap: break-word;
 	}
 </style>
 </head>
@@ -33,7 +37,7 @@
 </ul>
 </small>
 </div>
-<div id="pre">
+<div id="prerequisites">
 <h2>Prerequisites</h2>
 <p>My hosting provider of preference is <a href="https://hetzner.de">Hetzner</a>, whose cloud offerings we'll be using in this guide. <br />
 For NEAR <a href="https://near.org/stakewars">Stakewars III</a>, I recommend using <strong>8+ CPU</strong> cores, <strong>16 GB RAM</strong>, and <strong>200 GB+ disk space</strong>.</p>
@@ -42,16 +46,16 @@ For NEAR <a href="https://near.org/stakewars">Stakewars III</a>, I recommend usi
 €0.044 / h, i.e. €26.66 / mo. For this guide, I chose <strong>CPX51</strong> in Falkenstein (Germany) with 16 AMD CPUs, 32 GB of RAM and 360 GB disk space for €0.094 / h, i.e. €58.79 / mo.</p>
 
 <h3>Create a new cloud instance</h3>
-<img src="images/near/create-a-server.png" width="70%"> <br />
+<img src="images/near/create-a-server.png" width="600px"> <br />
 <p>Choose a location of choice, then 1. OS image: <strong>Ubuntu</strong>, 2. Type: <strong>Standard</strong>, 3. e.g. <strong>CPX41</strong>, 4. Volume: <strong>200 GB</strong>, 5. Networking: <strong>Public IPv4</strong>, <strong>Public IPv6</strong>. Add an <strong>SSH key</strong> to log in.</p>
 </div>
 <div id="c1">
 <h2>Challenge 001</h2>
 <p>To kick things off, it's time to create a brand new Near account on Shardnet. To do this, use the <a href="https://wallet.shardnet.near.org/">Shardnet Wallet</a>. <br />
 Thanks to Near Wallet's user-friendliness, all you need to do is to click on <strong>Create Account</strong>.</p>
-<img src="images/near/near-is-here.png" width="70%"> <br />
+<img src="images/near/near-is-here.png" width="600px"> <br />
 <p>Next, you can reserve your new <strong>account ID</strong>. <br />
-<img src="images/near/reserve-near-id.png" width="70%"> <br />
+<img src="images/near/reserve-near-id.png" width="600px"> <br />
 <br />
 <strong>Handy Shardnet Links</strong>:
 <ul>
