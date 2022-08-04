@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Running a Near Shardnet Validator in Stakewars III | os2357</title>
+<title>🪄 Running a Near Shardnet Validator in Stakewars III | os2357</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 	}
 	pre {
   		font-family: "Courier New", monospace;
-}
+	}
 </style>
 </head>
 <body>
@@ -150,11 +150,11 @@ near login
 
 <p>Let's get going by generating a new key for your pool.</p>
 <pre>
-near generate-key <pool_id>
+near generate-key [pool_id]
 </pre>
 
-<p>Note: <pool_id> ---> xx.factory.shardnet.near WHERE xx is you pool name. <br />
-Copy the file generated to shardnet folder: Make sure to replace <pool_id> by your accountId.</p>
+<p>Note: [pool_id] --> xx.factory.shardnet.near WHERE xx is you pool name. <br />
+Copy the file generated to shardnet folder: Make sure to replace [pool_id] by your accountId.</p>
 
 <pre>
 cp ~/.near-credentials/shardnet/YOUR_WALLET.json ~/.near/validator_key.json
@@ -182,6 +182,70 @@ target/release/neard run
 </div>
 <div id="c3">
 <h2>Challenge 003</h2>
+<p>You're now ready to mount a staking pool. To ensure that delegator funds are safe, Near uses a staking pool factory with a whitelisted staking contract. To run a Near Validator, it is mandatory to deploy a staking pool to a Near Account and stake to the pool. Let's deploy a staking pool contract.<br />
+
+Call the staking pool factory, create a new staking pool with the specified name, and deploy it to the indicated accountId:</p> 
+<pre>
+near call factory.shardnet.near create_staking_pool '{"staking_pool_id": "<pool name>", "owner_id": "[account_id]", "stake_public_key": "<public key>", "reward_fee_fraction": {"numerator": 5, "denominator": 100}, "code_hash":"DD428g9eqLL8fWUxv8QSpVFzyHi1Qd16P8ephYCTmMSZ"}' --accountId="[account_id]" --amount=30 --gas=300000000000000
+</pre>
+
+<p>Replace as follows:</p>
+<ul>
+	<li>Pool Name: Staking pool name, the factory automatically adds its name to this parameter, creating {pool_name}.{staking_pool_factory}, i.e. if you choose "bibimbap", it will create <strong>bibimbap.factory.shardnet.near</strong></li>
+	<li>Owner ID: The SHARDNET account (i.e. stakewares.shardnet.near) that will manage the staking pool.<li>
+	<li>Public Key: The public key in your validator_key.json file.<li>
+	<li>5: fee charged by the pool, e.g. 5% here.</li>
+	<li>Account Id: the shardnet account that is deploying and signing the mount tx, usually same as Owner ID.</li>
+</ul>
+
+<p>You can change pool parameters, such as e.g. updating the fee to 1%, as follows:</p>
+<pre>
+near call [pool_id] update_reward_fee_fraction '{"reward_fee_fraction": {"numerator": 1, "denominator": 100}}' --accountId [account_id] --gas=300000000000000
+</pre>
+
+<p>After this, you should be able to find your pool on the Shardnet explorer's <a href="https://explorer.shardnet.near.org/nodes/validators">validator page</a>.</p>
+
+<h3>Transactions Guide</h3>
+
+<p>Find below a list of actions and respective comamnds</p>
+
+<pre>
+# Deposit and Stake NEAR
+near call [pool_id] deposit_and_stake --amount <amount> --accountId [account_id] --gas=300000000000000
+
+# Unstake NEAR, note: amount in yoctoNEAR
+near call [pool_id] unstake '{"amount": "[amount yoctoNEAR]"}' --accountId [account_id] --gas=300000000000000
+
+# Unstake all
+near call [pool_id] unstake_all --accountId [account_id] --gas=300000000000000
+
+# Withdraw, requires 2-3 for completion after which you can withdraw from the pool (in yoctoNEAR)
+near call [pool_id] withdraw '{"amount": "[amount yoctoNEAR]"}' --accountId [account_id] --gas=300000000000000
+
+# Withdraw all
+near call [pool_id] withdraw_all --accountId [account_id] --gas=300000000000000
+
+# Ping, issues a new proposal and updates the staking balance for your delegators. Should be issued each epoch to keep reported rewards up to date.
+near call [pool_id] ping '{}' --accountId [account_id] --gas=300000000000000
+
+# Total Balance command
+near view [pool_id] get_account_total_balance '{"account_id": "[account_id]"}'
+
+# Staked Balance
+near view [pool_id] get_account_staked_balance '{"account_id": "[account_id]"}'
+
+# Unstaked Balance
+near view [pool_id] get_account_unstaked_balance '{"account_id": "[account_id]"}'
+
+# Withdraw unlocked funds
+near view [pool_id] is_account_unstaked_balance_available '{"account_id": "[account_id]"}'
+
+# Pause Staking
+near call [pool_id] pause_staking '{}' --accountId [account_id]
+
+# Resume Staking
+near call [pool_id] resume_staking '{}' --accountId [account_id]
+</pre>	
 </div>
 <div id="c4">
 <h2>Challenge 004</h2>
