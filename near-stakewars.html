@@ -259,6 +259,8 @@ near call [pool_id] resume_staking '{}' --accountId [account_id]
 journalctl -n 100 -f -u neard | ccze -A
 </pre>
 
+<img src="images/near/near-shardnet.png" width="100%"> <br />
+
 <h3>RPC</h3>
 <pre>
 sudo apt install curl jq
@@ -278,6 +280,8 @@ curl -s -d '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params
 # Check blocks produced / expected
 curl -r -s -d '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params": [null]}' -H 'Content-Type: application/json' 127.0.0.1:3030 | jq -c '.result.current_validators[] | select(.account_id | contains ("POOL_ID"))'
 </pre>
+<br />
+There are more challenges for you to explore. Check out <a href="https://near.org>">Near</a>!
 </div>
 </body>
 </html>
