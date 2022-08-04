@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Running a Near Shardnet Validator in Stakewars III | os2357</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
+<style type="text/css">
+	body {
+		font-family: 'Manrope', sans-serif;
+		margin: 20px;
+	}
+	img {
+		padding: 5px;
+	}
+	pre {
+  		font-family: "Courier New", monospace;
+}
+</style>
+</head>
+<body>
+<h1>Running a Near Shardnet Validator</h1>
+<h3>Covering Stakewars-III Challenges 001-004</h3>
+<div id="intro">
+<p>Follow along to learn how to deploy a Near shardnet validator using a cloud hosting provider of preference.
+<small>
+<ul>
+	<li><a href="#">Intro</a></li>
+	<li><a href="#pre">Prerequisites</a></li>
+	<li><a href="#c1">Challenge 001</a></a></li>
+	<li><a href="#c2">Challenge 002</a></li>
+	<li><a href="#c3">Challenge 003</a></li>
+	<li><a href="#c4">Challenge 004</a></li>
+</ul>
+</small>
+</div>
+<div id="pre">
+<h2>Prerequisites</h2>
+<p>My hosting provider of preference is <a href="https://hetzner.de">Hetzner</a>, whose cloud offerings we'll be using in this guide. <br />
+For NEAR <a href="https://near.org/stakewars">Stakewars III</a>, I recommend using <strong>8 CPU</strong> cores, <strong>16 GB RAM</strong>, and <strong>200 GB+ disk space</strong>.</p>
+<h3>Pricing</h3>
+<p>A good example is <strong>CPX41</strong> (AMD) in Falkenstein (Germany) for € 0.0452 / hr, i.e. € 27.25 / mo.</p>
+<h3>Create a new cloud instance</h3>
+<img src="images/near/create-a-server.png" width="70%"> <br />
+<p>Choose a location of choice, then 1. OS image: <strong>Ubuntu</strong>, 2. Type: <strong>Standard</strong>, 3. e.g. <strong>CPX41</strong>, 4. Volume: <strong>200 GB</strong>, 5. Networking: <strong>Public IPv4</strong>, <strong>Public IPv6</strong>. Add an <strong>SSH key</strong> to log in.</p>
+</div>
+<div id="c1">
+<h2>Challenge 001</h2>
+<p>To kick things off, it's time to create a brand new Near account on Shardnet. To do this, use the <a href="https://wallet.shardnet.near.org/">Shardnet Wallet</a>. <br />
+Thanks to Near Wallet's user-friendliness, all you need to do is to click on <strong>Create Account</strong>.</p>
+<img src="images/near/near-is-here.png" width="70%"> <br />
+<p>Next, you can reserve your new <strong>account ID</strong>.
+<img src="images/near/reserve-near-id.png" width="70%"> <br />
+<br />
+<strong>Handy Shardnet Links</strong>:
+<ul>
+	<li><a href="https://wallet.shardnet.near.org/">Wallet</a></li>
+	<li><a href="https://explorer.shardnet.near.org/">Explorer</a></li>
+</ul>
+
+<p>Cool! Now let's set up NEAR CLI. <br /></p>
+<pre>
+sudo apt update && sudo apt upgrade -y
+curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash - 
+sudo apt install build-essential nodejs
+PATH="$PATH"
+sudo npm install -g near-cli</pre>
+
+<p>Set Near testnet as persistent environment variables:</p>
+<pre>
+echo 'export NEAR_ENV=shardnet' >> ~/.bashrc
+echo 'export NEAR_ENV=shardnet' >> ~/.bash_profile
+source $HOME/.bash_profile
+</pre>
+<p>Test NEAR CLI by checking out its help page</p>
+<pre>near --help</pre>
+
+</div>
+<div id="c2">
+<h2>Challenge 002</h2>
+</div>
+<div id="c3">
+<h2>Challenge 003</h2>
+</div>
+<div id="c4">
+<h2>Challenge 004</h2>
+</div>
+</body>
+</html>
